@@ -1,0 +1,43 @@
+.model flat, stdcall
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;includem biblioteci, si declaram ce functii vrem sa importam
+includelib msvcrt.lib
+extern exit: proc
+extern scanf: proc
+extern printf: proc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;declaram simbolul start ca public - de acolo incepe executia
+public start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;sectiunile programului, date, respectiv cod
+.data
+;aici declaram date
+sir3 dd -2,-2,0,1,1,2
+l3 dd 6
+
+sir macro sir3,le
+	lea esi, sir3
+	mov eax, dword ptr[esi]
+	compar:
+	cmp eax, dword ptr[esi+4]
+	je sterg
+	add esi, 4
+	jmp compar
+	sterg:
+	mov edx, 0
+	cmp edx, l3-1
+	je gata
+	mov eax, dword ptr[esi]
+	mov dword ptr[esi+4], eax
+	
+endm
+.code
+start:
+
+	;terminarea programului
+	push 0
+	call exit
+end start
